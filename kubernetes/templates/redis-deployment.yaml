@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: REDIS
+  template:
+    metadata:
+      name: redis-lab
+      labels:
+        app: REDIS
+    spec:
+      hostname: redis
+      containers:
+        - name: redis
+          image: redis:7.0.5
+          command: ["redis-server"]
+          args: ["/usr/local/etc/redis/redis.conf"]
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - mountPath: /usr/local/etc/redis
+              name: redis-etc-vol
+            - mountPath: /data
+              name: redis-data-vol
+      volumes:
+        - name: redis-etc-vol
+          persistentVolumeClaim:
+            claimName: redis-etc-pvc
+        - name: redis-data-vol
+          persistentVolumeClaim:
+            claimName: redis-data-pvc
+      restartPolicy: Always
