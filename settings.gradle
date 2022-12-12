@@ -1,0 +1,4 @@
+rootProject.name = 'redis-lab'
+
+include 'redis-client'
+

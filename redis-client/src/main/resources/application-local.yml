@@ -1,0 +1,17 @@
+server:
+  port: 8088
+
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 30379
+      ssl: false
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  cache:
+    disabled: true
+  swagger-ui:
+    path: /swagger-ui.html
