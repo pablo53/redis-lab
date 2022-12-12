@@ -28,8 +28,11 @@ spec:
               name: redis-data-vol
       volumes:
         - name: redis-etc-vol
-          persistentVolumeClaim:
-            claimName: redis-etc-pvc
+          configMap:
+            name: redis-conf-cm
+            items:
+              - key: redis-conf
+                path: redis.conf
         - name: redis-data-vol
           persistentVolumeClaim:
             claimName: redis-data-pvc
