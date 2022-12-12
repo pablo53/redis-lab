@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -46,6 +47,20 @@ class RedisController(
         LOGGER.info("Echo putting endpoint called with message: $message")
         val retMsg = redisService.putEcho(message = message)
         return ResponseEntity.ok(retMsg)
+    }
+
+    @GetMapping("/keys")
+    fun getAllKeys(): ResponseEntity<List<String>> {
+        LOGGER.info("All keys getting endpoint called.")
+        val keyList = redisService.getAllKeys()
+        return ResponseEntity.ok(keyList)
+    }
+
+    @GetMapping("/key/{key}")
+    fun getKey(@RequestParam("key") key: String): ResponseEntity<String> {
+        LOGGER.info("Key getting endpoint called with key: $key")
+        val retVal = redisService.getKey(key = key)
+        return ResponseEntity.ok(retVal)
     }
 
 }

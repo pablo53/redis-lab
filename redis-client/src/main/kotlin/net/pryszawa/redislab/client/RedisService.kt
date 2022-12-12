@@ -4,10 +4,13 @@ import org.slf4j.LoggerFactory
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.CachePut
 import org.springframework.cache.annotation.Cacheable
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 
 @Service
-class RedisService {
+class RedisService(
+    private val redisTemplate: RedisTemplate<String, String>,
+) {
 
     companion object {
         @JvmStatic
@@ -40,6 +43,18 @@ class RedisService {
         val retMsg = "Put message: $message"
         LOGGER.info(retMsg)
         return retMsg
+    }
+
+    fun getAllKeys(): List<String> {
+        LOGGER.info("Querying for all keys.")
+        val allKeys = redisTemplate.keys("*")
+        return allKeys.toList()
+    }
+
+    fun getKey(key: String): String {
+        LOGGER.info("Querying for key '$key'.")
+        val value = redisTemplate.opsForValue()[key]
+        return value ?: ""
     }
 
 }
